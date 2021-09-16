@@ -26,27 +26,27 @@ public class ApplicationRunnerImpl implements ApplicationRunner{
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		
-		// Å×½ºÆ® µ¥ÀÌÅÍ ÀÔ·Â
-		OrganizationsEntity company = OrganizationsEntity.builder().name("ABCÈ¸»ç").code("100").type("Company").build(); 
+		// í…ŒìŠ¤íŠ¸ ë°ì´í„° ì…ë ¥
+		OrganizationsEntity company = OrganizationsEntity.builder().name("ABCíšŒì‚¬").code("100").type("Company").build(); 
 	
-		OrganizationsEntity BS = OrganizationsEntity.builder().name("°æ¿µÁö¿øº»ºÎ").code("110").type("Division").parent(company).build();
+		OrganizationsEntity BS = OrganizationsEntity.builder().name("ê²½ì˜ì§€ì›ë³¸ë¶€").code("110").type("Division").parent(company).build();
 		
-		OrganizationsEntity BS1 = OrganizationsEntity.builder().name("ÀÎ»çÆÀ").code("111").type("Department").parent(BS).build();
-		OrganizationsEntity BS2 = OrganizationsEntity.builder().name("ÃÑ¹«ÆÀ").code("112").type("Department").parent(BS).build();
-		OrganizationsEntity BS3 = OrganizationsEntity.builder().name("¹ı¹«ÆÀ").code("113").type("Department").parent(BS).build();
+		OrganizationsEntity BS1 = OrganizationsEntity.builder().name("ì¸ì‚¬íŒ€").code("111").type("Department").parent(BS).build();
+		OrganizationsEntity BS2 = OrganizationsEntity.builder().name("ì´ë¬´íŒ€").code("112").type("Department").parent(BS).build();
+		OrganizationsEntity BS3 = OrganizationsEntity.builder().name("ë²•ë¬´íŒ€").code("113").type("Department").parent(BS).build();
 		
-		OrganizationsEntity swDev = OrganizationsEntity.builder().name("SW°³¹ßº»ºÎ").code("120").type("Division").parent(company).build(); 
+		OrganizationsEntity swDev = OrganizationsEntity.builder().name("SWê°œë°œë³¸ë¶€").code("120").type("Division").parent(company).build(); 
 		
-		OrganizationsEntity flatformDev = OrganizationsEntity.builder().name("ÇÃ·§Æû°³¹ßºÎ").code("D121").type("Department").parent(swDev).build(); 
+		OrganizationsEntity flatformDev = OrganizationsEntity.builder().name("í”Œë«í¼ê°œë°œë¶€").code("D121").type("Department").parent(swDev).build(); 
 
-		OrganizationsEntity flatformDev1 = OrganizationsEntity.builder().name("ºñÁîÇÃ·§ÆûÆÀ").code("D1211").type("Department").parent(flatformDev).build(); 
-		OrganizationsEntity flatformDev2 = OrganizationsEntity.builder().name("ºñÁî¼­ºñ½ºÆÀ").code("D1212").type("Department").parent(flatformDev).build(); 
-		OrganizationsEntity flatformDev3 = OrganizationsEntity.builder().name("±×·ì¿ş¾î°³¹ßÆÀ").code("D1213").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev1 = OrganizationsEntity.builder().name("ë¹„ì¦ˆí”Œë«í¼íŒ€").code("D1211").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev2 = OrganizationsEntity.builder().name("ë¹„ì¦ˆì„œë¹„ìŠ¤íŒ€").code("D1212").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev3 = OrganizationsEntity.builder().name("ê·¸ë£¹ì›¨ì–´ê°œë°œíŒ€").code("D1213").type("Department").parent(flatformDev).build(); 
 		
-		OrganizationsEntity bizServiceDev = OrganizationsEntity.builder().name("ºñÁî¼­ºñ½º°³¹ßºÎ").code("D122").type("Department").parent(swDev).build(); 
+		OrganizationsEntity bizServiceDev = OrganizationsEntity.builder().name("ë¹„ì¦ˆì„œë¹„ìŠ¤ê°œë°œë¶€").code("D122").type("Department").parent(swDev).build(); 
 
-		OrganizationsEntity bizServiceDev1 = OrganizationsEntity.builder().name("ÇÃ·§Æû¼­ºñ½ºÆÀ").code("D1221").type("Department").parent(bizServiceDev).build(); 
-		OrganizationsEntity bizServiceDev2 = OrganizationsEntity.builder().name("¸ğ¹ÙÀÏ°³¹ßÆÀ").code("D1222").type("Department").parent(bizServiceDev).build(); 
+		OrganizationsEntity bizServiceDev1 = OrganizationsEntity.builder().name("í”Œë«í¼ì„œë¹„ìŠ¤íŒ€").code("D1221").type("Department").parent(bizServiceDev).build(); 
+		OrganizationsEntity bizServiceDev2 = OrganizationsEntity.builder().name("ëª¨ë°”ì¼ê°œë°œíŒ€").code("D1222").type("Department").parent(bizServiceDev).build(); 
 		
 		List<OrganizationsEntity> list = Arrays.asList(
 			company,BS,BS1,BS2,BS3
@@ -55,45 +55,39 @@ public class ApplicationRunnerImpl implements ApplicationRunner{
 		repo.saveAll(list);
 		
 		
-		memRepo.save(MemberEntity.builder().name("»çÀå1").team(company).manager(true).build());
+		memRepo.save(MemberEntity.builder().name("ì‚¬ì¥1").team(company).manager(true).build());
 		
-		memRepo.save(MemberEntity.builder().name("°æ¿µ1").team(BS).manager(true).build());
+		memRepo.save(MemberEntity.builder().name("ê²½ì˜1").team(BS).manager(true).build());
 		
-		memRepo.save(MemberEntity.builder().name("ÀÎ»ç1").team(BS1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("ÀÎ»ç2").team(BS1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("ÀÎ»ç3").team(BS1).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ì¸ì‚¬1").team(BS1).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ì¸ì‚¬2").team(BS1).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ì¸ì‚¬3").team(BS1).manager(false).build());
 		
-		memRepo.save(MemberEntity.builder().name("ÃÑ¹«1").team(BS2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("ÃÑ¹«2").team(BS2).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ì´ë¬´1").team(BS2).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ì´ë¬´2").team(BS2).manager(false).build());
 		
-		memRepo.save(MemberEntity.builder().name("¹ı¹«1").team(BS3).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("¹ı¹«2").team(BS3).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ë²•ë¬´1").team(BS3).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ë²•ë¬´2").team(BS3).manager(false).build());
 		
 		
 		memRepo.save(MemberEntity.builder().name("SW1").team(swDev).manager(true).build());
 		
-		memRepo.save(MemberEntity.builder().name("ÇÃ·§Æû1").team(flatformDev).manager(true).build());
-		memRepo.save(MemberEntity.builder().name("ÇÃ·§Æû1").team(flatformDev1).manager(true).build());
+		memRepo.save(MemberEntity.builder().name("í”Œë«í¼1").team(flatformDev).manager(true).build());
+		memRepo.save(MemberEntity.builder().name("í”Œë«í¼1").team(flatformDev1).manager(true).build());
 		
-		memRepo.save(MemberEntity.builder().name("°³¹ß1").team(flatformDev1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß2").team(flatformDev1).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ1").team(flatformDev1).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ2").team(flatformDev1).manager(false).build());
 		
-		memRepo.save(MemberEntity.builder().name("°³¹ß3").team(flatformDev2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß4").team(flatformDev2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß5").team(flatformDev3).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß6").team(flatformDev3).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ3").team(flatformDev2).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ4").team(flatformDev2).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ5").team(flatformDev3).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ6").team(flatformDev3).manager(false).build());
 		
-		memRepo.save(MemberEntity.builder().name("¼­ºñ½º1").team(bizServiceDev).manager(true).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß7").team(bizServiceDev1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß8").team(bizServiceDev1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß9").team(bizServiceDev2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("°³¹ß10").team(bizServiceDev2).manager(false).build());
-		
-		
-		
-		
-		
-		
+		memRepo.save(MemberEntity.builder().name("ì„œë¹„ìŠ¤1").team(bizServiceDev).manager(true).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ7").team(bizServiceDev1).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ8").team(bizServiceDev1).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ9").team(bizServiceDev2).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("ê°œë°œ10").team(bizServiceDev2).manager(false).build());
 		
 	}
 	

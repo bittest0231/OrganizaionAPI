@@ -16,7 +16,7 @@ public class MappingController {
 
 	private final OrganizationsService orgService;
 	
-	// GET Á¶Á÷µµ Á¶È¸ API
+	// GET ì¡°ì§ë„ ì¡°íšŒ API
 	@GetMapping("/organizations")
 //	public List<?> selectOrganizations(
 	public Object selectOrganizations(
@@ -31,62 +31,62 @@ public class MappingController {
 			if(searchKeyword != null && !"".equals(searchKeyword)) {
 				
 				if("dept".equals(searchType)) {
-					// ºÎ¼­ Å°¿öµå·Î °Ë»ö
+					// ë¶€ì„œ í‚¤ì›Œë“œë¡œ ê²€ìƒ‰
 					return orgService.getOnlyOrgFromKeyword(searchType, searchKeyword);
 				}else{
-					// ºÎ¼­¿ø Å°¿öµå·Î °Ë»ö
+					// ë¶€ì„œì› í‚¤ì›Œë“œë¡œ ê²€ìƒ‰
 					return orgService.getOrgFromKeyword(searchType, searchKeyword);
 				}
 			}else {
-				// Å°¿öµå ºñ¾îÀÖÀ½
+				// í‚¤ì›Œë“œ ë¹„ì–´ìˆìŒ
 				System.out.println("searchKeyword is null");
 				
 				//TODO errorCode return
 			}
 		}else {
-			// searchType »ç¿ëÇÏÁö ¾ÊÀ½ or ºñ¾îÀÖÀ½
+			// searchType ì‚¬ìš©í•˜ì§€ ì•ŠìŒ or ë¹„ì–´ìˆìŒ
 			System.out.println("searchType is null");
 		}
 		
 		/*
-		 * ¿ä±¸»çÇ×¿¡ µû¶ó searchType °ú deptCode´Â °øÁ¸ÇÒ ¼ö ¾øÀ½
+		 * ìš”êµ¬ì‚¬í•­ì— ë”°ë¼ searchType ê³¼ deptCodeëŠ” ê³µì¡´í•  ìˆ˜ ì—†ìŒ
 		 * */
 		
 		if(deptCode != null && !"".equals(deptCode)) {
-			// ±âÁØ ºÎ¼­ÄÚµå·Î °Ë»ö
+			// ê¸°ì¤€ ë¶€ì„œì½”ë“œë¡œ ê²€ìƒ‰
 			if(deptOnly) {
-				// ºÎ¼­¸¸ °Ë»ö
+				// ë¶€ì„œë§Œ ê²€ìƒ‰
 				return orgService.getOnlyOrganizations(deptCode);
 			}else{
-				// ºÎ¼­, ºÎ¼­¿ø °Ë»ö
+				// ë¶€ì„œ, ë¶€ì„œì› ê²€ìƒ‰
 				return orgService.getOrganizations(deptCode);
 			}
 		}else {
-			// ±âÁØ ºÎ¼­ÄÚµå ºñ¾îÀÖÀ½
+			// ê¸°ì¤€ ë¶€ì„œì½”ë“œ ë¹„ì–´ìˆìŒ
 			System.out.println("deptCode is null");
 		}
 		
 		/* 
-		 * deptOnly true  ºÎ¼­¸¸
-		 * deptOnly false  ºÎ¼­¿ø Æ÷ÇÔ
+		 * deptOnly true  ë¶€ì„œë§Œ
+		 * deptOnly false  ë¶€ì„œì› í¬í•¨
 		 */
-		// searchType »ç¿ëÇÏÁö ¾Ê°í, deptCode »ç¿ëÇÏÁö ¾ÊÀ» °æ¿ì¿¡ 
+		// searchType ì‚¬ìš©í•˜ì§€ ì•Šê³ , deptCode ì‚¬ìš©í•˜ì§€ ì•Šì„ ê²½ìš°ì— 
 		if(deptOnly) {
-			// deptOnly ÆÄ¶ó¹ÌÅÍ¸¸ »ç¿ë µÉ ¶§
+			// deptOnly íŒŒë¼ë¯¸í„°ë§Œ ì‚¬ìš© ë  ë•Œ
 			return orgService.getOnlyOrganizations();
 		}else {
-			// ¸ğµç ÆÄ¶ó¹ÌÅÍ°¡ »ç¿ëµÇÁö ¾ÊÀ» ¶§
+			// ëª¨ë“  íŒŒë¼ë¯¸í„°ê°€ ì‚¬ìš©ë˜ì§€ ì•Šì„ ë•Œ
 			return orgService.getOrganizations();
 		}
 	}
 	
 	
-	//TODO ºÎ¼­°ü¸® API
+	//TODO ë¶€ì„œê´€ë¦¬ API
 	//@PostMapping("/dept")
 	//@PutMapping("/dept/{deptId}")
 	//@DeleteMapping("/dept/{deptId}")
 	
-	//TODO ºÎ¼­¿ø °ü¸® API
+	//TODO ë¶€ì„œì› ê´€ë¦¬ API
 	//@PostMapping("/member")
 	//@PutMapping("/member/{memberId}")
 	//@DeleteMapping("/member/{memberId}")

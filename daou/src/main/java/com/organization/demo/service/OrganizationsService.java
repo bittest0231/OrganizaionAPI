@@ -24,7 +24,7 @@ public class OrganizationsService {
 	
 	private final MemberRepository MemRepo;
 	
-	// ÀüÃ¼ ºÎ¼­, ¸â¹ö ¸ğµÎ °Ë»ö
+	// ì „ì²´ ë¶€ì„œ, ë©¤ë²„ ëª¨ë‘ ê²€ìƒ‰
 	public OrganizationResult getOrganizations(){
 		
 		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
@@ -32,7 +32,7 @@ public class OrganizationsService {
 		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
 	}
 	
-	// ÀüÃ¼ ºÎ¼­¸¸ °Ë»ö
+	// ì „ì²´ ë¶€ì„œë§Œ ê²€ìƒ‰
 	public OnlyOrganizationResult getOnlyOrganizations(){
 		
 		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
@@ -40,7 +40,7 @@ public class OrganizationsService {
 		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
 	}
 		
-	// Æ¯Á¤ ºÎ¼­ ±âÁØÀ¸·Î ºÎ¼­, ºÎ¼­¿ø °Ë»ö 
+	// íŠ¹ì • ë¶€ì„œ ê¸°ì¤€ìœ¼ë¡œ ë¶€ì„œ, ë¶€ì„œì› ê²€ìƒ‰ 
 	public OrganizationResult getOrganizations(String deptCode){
 		
 		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
@@ -48,7 +48,7 @@ public class OrganizationsService {
 		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
 	}
 	
-	// Æ¯Á¤ ºÎ¼­ ±âÁØÀ¸·Î ºÎ¼­¸¸ °Ë»ö
+	// íŠ¹ì • ë¶€ì„œ ê¸°ì¤€ìœ¼ë¡œ ë¶€ì„œë§Œ ê²€ìƒ‰
 	public OnlyOrganizationResult getOnlyOrganizations(String deptCode){
 		
 		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
@@ -56,9 +56,9 @@ public class OrganizationsService {
 		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
 	}
 	
-	/** Å°¿öµå °ü·Ã °Ë»ö**/
+	/** í‚¤ì›Œë“œ ê´€ë ¨ ê²€ìƒ‰**/
 	
-	// Æ¯Á¤ Å°¿öµå·Î °Ë»ö ºÎ¼­¸¸
+	// íŠ¹ì • í‚¤ì›Œë“œë¡œ ê²€ìƒ‰ ë¶€ì„œë§Œ
 	public List<OnlyOrganizationWithParentResult> getOnlyOrgFromKeyword(String searchType, String keyword){
 		
 		final List<OrganizationsEntity> list = OrgRepo.findByNameContains(keyword);
@@ -66,7 +66,7 @@ public class OrganizationsService {
 		return list.stream().map(OnlyOrganizationWithParentResult::new).collect(Collectors.toList());
 	}
 	
-	// Æ¯Á¤ Å°¿öµå·Î ºÎ¼­¿ø °Ë»ö ºÎ¼­Æ÷ÇÔ
+	// íŠ¹ì • í‚¤ì›Œë“œë¡œ ë¶€ì„œì› ê²€ìƒ‰ ë¶€ì„œí¬í•¨
 	public List<OrganizationWithParentResult> getOrgFromKeyword(String searchType, String keyword){
 		
 		final List<MemberEntity> list = MemRepo.findByNameContains(keyword);
