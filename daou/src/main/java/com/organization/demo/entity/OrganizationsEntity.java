@@ -35,11 +35,11 @@ public class OrganizationsEntity {
 	@Column(name = "CODE_ID")
 	private String code;
 	/*
-	* Company: È¸»ç
-	* Division: º»ºÎ
-	* Department: ºÎ, ÆÀ
-	* Member: ºÎ¼­¿ø
-	±Ô¸ð: Company > Division > Department
+	* Company: íšŒì‚¬
+	* Division: ë³¸ë¶€
+	* Department: ë¶€, íŒ€
+	* Member: ë¶€ì„œì›
+	ê·œëª¨: Company > Division > Department
 	*/
 	@Column(name = "TYPE")
 	private String type;

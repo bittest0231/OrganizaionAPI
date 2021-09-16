@@ -1,14 +1,23 @@
 package com.organization.demo.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.organization.demo.entity.OrganizationsEntity;
+import com.organization.demo.model.DeptModel;
+import com.organization.demo.model.ErrorBody400;
+import com.organization.demo.model.ErrorBody500;
 import com.organization.demo.service.OrganizationsService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RequestMapping("/org")
 @RequiredArgsConstructor
 @RestController
@@ -81,8 +90,40 @@ public class MappingController {
 	}
 	
 	
-	//TODO 부서관리 API
-	//@PostMapping("/dept")
+	// 부서 추가
+	/**
+	 *
+	 * {
+  		"code" : "140", "name":"테스트팀", "type":"Division","parentId":1
+		}
+	 * 
+	 * */
+	@PostMapping("/dept")
+	public ResponseEntity<?> insertDept(@RequestBody DeptModel model) {
+
+		// 입력에 필요로 하는 값이 null 이거나 빈값인 경우 체크
+		if(model.getCode() == null || "".equals(model.getCode())  
+			|| model.getName() == null || "".equals(model.getName())
+			|| model.getType() == null || "".equals(model.getType()) ) 
+		{
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message("요청값이 적절하지 않습니다.").build());	
+		}
+		
+		OrganizationsEntity entity = null;
+		
+		try {
+			entity = orgService.insertDept(model);
+		}catch(Exception e) {
+			return ResponseEntity.internalServerError().body(ErrorBody500.builder().message("내부 서버 오류가 발생했습니다.").build());	
+		}
+		
+		// 부모코드가 존재하지 않는 경우
+		if(entity==null) {
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message("일치하는 부모코드가 없습니다.").build());	
+		} 
+		
+		return ResponseEntity.ok(entity);
+	}
 	//@PutMapping("/dept/{deptId}")
 	//@DeleteMapping("/dept/{deptId}")
 	

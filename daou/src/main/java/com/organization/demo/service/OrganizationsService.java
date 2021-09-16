@@ -11,6 +11,7 @@ import com.organization.demo.entity.OnlyOrganizationWithParentResult;
 import com.organization.demo.entity.OrganizationResult;
 import com.organization.demo.entity.OrganizationWithParentResult;
 import com.organization.demo.entity.OrganizationsEntity;
+import com.organization.demo.model.DeptModel;
 import com.organization.demo.repository.MemberRepository;
 import com.organization.demo.repository.OrganizationsRepository;
 
@@ -74,6 +75,19 @@ public class OrganizationsService {
 		return list.stream().map(OrganizationWithParentResult::new).collect(Collectors.toList());
 	}
 	
+	// 부서 추가
+	public OrganizationsEntity insertDept(DeptModel model){
+		OrganizationsEntity saver = null;
+		
+		final OrganizationsEntity parentEntity = OrgRepo.findById(model.getParentId());
+		
+		if(parentEntity == null) {
+			return null;
+		}
+		saver = OrgRepo.save(OrganizationsEntity.builder().code(model.getCode()).name(model.getName()).type(model.getType()).parent(parentEntity).build());
+		
+		return saver;
+	}
 	
 	
 	

@@ -10,6 +10,8 @@ import com.organization.demo.entity.OrganizationsEntity;
 @Repository
 public interface OrganizationsRepository extends JpaRepository<OrganizationsEntity, Integer>{
 	
+	OrganizationsEntity findById(long id);
+	
 	List<OrganizationsEntity> findByCode(String code);
 	
 	List<OrganizationsEntity> findByNameContains(String name);
