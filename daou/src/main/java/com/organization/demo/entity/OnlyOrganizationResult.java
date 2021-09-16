@@ -8,12 +8,14 @@ import lombok.Getter;
 @Getter
 public class OnlyOrganizationResult {
 
+	private long id;
 	private String code;
 	private String name;
 	private String type;
 	private List<OnlyOrganizationResult> children;
 	
-	public OnlyOrganizationResult(final OrganizationsEntity entity) { 
+	public OnlyOrganizationResult(final OrganizationsEntity entity) {
+		this.id = entity.getId();
 		this.code = entity.getCode();
 		this.type = entity.getType();
 		this.name = entity.getName();

@@ -12,4 +12,7 @@ public interface OrganizationsRepository extends JpaRepository<OrganizationsEnti
 	
 	List<OrganizationsEntity> findByCode(String code);
 	
+	List<OrganizationsEntity> findByNameContains(String name);
+	
+	
 }

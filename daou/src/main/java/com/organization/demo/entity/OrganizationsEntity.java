@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,8 +28,10 @@ import lombok.ToString;
 public class OrganizationsEntity {
 	
 	
-
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
 	@Column(name = "CODE_ID")
 	private String code;
 	/*
@@ -43,12 +47,12 @@ public class OrganizationsEntity {
 	@Column(name = "NAME")
 	private String name;
 	
-	@ManyToOne(fetch=FetchType.LAZY , cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(fetch=FetchType.EAGER , cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "PAR_CODE_ID")
 	private OrganizationsEntity parent;
 	
 	
-	@OneToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.EAGER)
+	@OneToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.LAZY)
 	private List<MemberResult> members ;
 	
 	

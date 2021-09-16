@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class OrganizationResult {
 
+	private long id;
 	private String code;
 	private String name;
 	private String type;
@@ -15,6 +16,7 @@ public class OrganizationResult {
 	private List<OrganizationResult> children;
 	
 	public OrganizationResult(final OrganizationsEntity entity) { 
+		this.id = entity.getId();
 		this.code = entity.getCode();
 		this.type = entity.getType();
 		this.name = entity.getName();

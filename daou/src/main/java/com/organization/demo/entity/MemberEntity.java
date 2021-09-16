@@ -1,6 +1,7 @@
 package com.organization.demo.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,9 +28,11 @@ public class MemberEntity {
 	
 	private String name;
 	
+	private String type = "Member";
+	
 	private boolean manager;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="TEAM_CODE")
 	private OrganizationsEntity team;
 	
