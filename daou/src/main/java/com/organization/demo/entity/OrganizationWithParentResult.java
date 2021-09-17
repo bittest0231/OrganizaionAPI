@@ -1,5 +1,7 @@
 package com.organization.demo.entity;
 
+import java.util.List;
+
 import lombok.Getter;
 
 @Getter
@@ -10,7 +12,8 @@ public class OrganizationWithParentResult {
 	private String name;
 	private String type;
 	private boolean manager;
-	private OrganizationsEntity team;
+//	private OrganizationsEntity team;
+	private List<OrganizationsEntity> team;
 	
 	
 	public OrganizationWithParentResult(final MemberEntity entity) { 

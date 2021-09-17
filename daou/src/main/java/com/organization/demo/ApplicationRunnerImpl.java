@@ -1,5 +1,6 @@
 package com.organization.demo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,40 +55,65 @@ public class ApplicationRunnerImpl implements ApplicationRunner{
 		);
 		repo.saveAll(list);
 		
+		List<OrganizationsEntity> addTeam = new ArrayList<>();
+		addTeam.add(company);
+		memRepo.save(MemberEntity.builder().name("사장1").team(addTeam).manager(true).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("사장1").team(company).manager(true).build());
+		addTeam.add(BS);
+		memRepo.save(MemberEntity.builder().name("경영1").team(addTeam).manager(true).build());
+		addTeam.clear();
+
+		addTeam.add(BS1);
+		memRepo.save(MemberEntity.builder().name("인사1").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("인사2").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("인사3").team(addTeam).manager(false).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("경영1").team(BS).manager(true).build());
+		addTeam.add(BS2);
+		memRepo.save(MemberEntity.builder().name("총무1").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("총무2").team(addTeam).manager(false).build());
+		addTeam.clear();
+
+		addTeam.add(BS3);
+		memRepo.save(MemberEntity.builder().name("법무1").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("법무2").team(addTeam).manager(false).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("인사1").team(BS1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("인사2").team(BS1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("인사3").team(BS1).manager(false).build());
+		addTeam.add(swDev);
+		memRepo.save(MemberEntity.builder().name("SW1").team(addTeam).manager(true).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("총무1").team(BS2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("총무2").team(BS2).manager(false).build());
+		addTeam.add(flatformDev);
+		addTeam.add(flatformDev1);
+		memRepo.save(MemberEntity.builder().name("플랫폼1").team(addTeam).manager(true).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("법무1").team(BS3).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("법무2").team(BS3).manager(false).build());
+		addTeam.add(flatformDev1);
+		memRepo.save(MemberEntity.builder().name("개발1").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("개발2").team(addTeam).manager(false).build());
+		addTeam.clear();
 		
+		addTeam.add(flatformDev2);
+		memRepo.save(MemberEntity.builder().name("개발3").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("개발4").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("개발5").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("개발6").team(addTeam).manager(false).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("SW1").team(swDev).manager(true).build());
+		addTeam.add(bizServiceDev);
+		memRepo.save(MemberEntity.builder().name("서비스1").team(addTeam).manager(true).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("플랫폼1").team(flatformDev).manager(true).build());
-		memRepo.save(MemberEntity.builder().name("플랫폼1").team(flatformDev1).manager(true).build());
+		addTeam.add(bizServiceDev1);
+		memRepo.save(MemberEntity.builder().name("개발7").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("개발8").team(addTeam).manager(false).build());
+		addTeam.clear();
 		
-		memRepo.save(MemberEntity.builder().name("개발1").team(flatformDev1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("개발2").team(flatformDev1).manager(false).build());
-		
-		memRepo.save(MemberEntity.builder().name("개발3").team(flatformDev2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("개발4").team(flatformDev2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("개발5").team(flatformDev3).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("개발6").team(flatformDev3).manager(false).build());
-		
-		memRepo.save(MemberEntity.builder().name("서비스1").team(bizServiceDev).manager(true).build());
-		memRepo.save(MemberEntity.builder().name("개발7").team(bizServiceDev1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("개발8").team(bizServiceDev1).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("개발9").team(bizServiceDev2).manager(false).build());
-		memRepo.save(MemberEntity.builder().name("개발10").team(bizServiceDev2).manager(false).build());
+		addTeam.add(bizServiceDev2);
+		memRepo.save(MemberEntity.builder().name("개발9").team(addTeam).manager(false).build());
+		memRepo.save(MemberEntity.builder().name("개발10").team(addTeam).manager(false).build());
+		addTeam.clear();
 		
 	}
 	

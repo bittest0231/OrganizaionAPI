@@ -11,9 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.transaction.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -55,7 +55,10 @@ public class OrganizationsEntity {
 	private OrganizationsEntity parent;
 	
 	
-	@OneToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.LAZY)
+//	@OneToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.LAZY)
+//	private List<MemberResult> members ;
+	
+	@ManyToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.LAZY)
 	private List<MemberResult> members ;
 	
 	

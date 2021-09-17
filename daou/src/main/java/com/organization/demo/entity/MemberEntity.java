@@ -1,12 +1,15 @@
 package com.organization.demo.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,17 +35,25 @@ public class MemberEntity {
 	
 	private boolean manager;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="TEAM_CODE")
-	private OrganizationsEntity team;
+//	@ManyToOne(fetch=FetchType.EAGER)
+//	@JoinColumn(name="TEAM_CODE")
+//	private OrganizationsEntity team;
+
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+			name = "MEMBER_TEAM"
+			,joinColumns = @JoinColumn(name="MEMBER_ENTITY_ID")
+			,inverseJoinColumns = @JoinColumn(name = "TEMA_ID")
+	)
+	private List<OrganizationsEntity> team;
 	
 	@JsonIgnore
-    public OrganizationsEntity getTeam() {
+    public List<OrganizationsEntity> getTeam() {
         return team ;
     }
 	
 	@Builder
-	public MemberEntity(String name, OrganizationsEntity team, boolean manager) {
+	public MemberEntity(String name, List<OrganizationsEntity> team, boolean manager) {
 		
 		this.name = name;
 		this.team = team;
