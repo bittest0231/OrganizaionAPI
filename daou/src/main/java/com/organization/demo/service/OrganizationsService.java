@@ -121,8 +121,7 @@ public class OrganizationsService {
 		}catch(Exception e) {
 			throw new Exception();
 		}
-		
-		return OrgRepo.save(
+		OrganizationsEntity result = OrgRepo.save(
 				OrganizationsEntity
 				.builder()
 				.code(model.getCode())
@@ -130,7 +129,8 @@ public class OrganizationsService {
 				.type(model.getType())
 				.parent(parentEntity)
 				.build()
-			);
+			); 
+		return result; 
 	}
 	
 	// 부서 업데이트
@@ -148,10 +148,6 @@ public class OrganizationsService {
 			e.printStackTrace();
 			throw new Exception();
 		}
-		
-//		if(entity == null) {
-//			throw new InvalidDataException("일치하는 부서코드가 없습니다.");
-//		}
 		
 		// 각각의 정보가 다른경우만 set 해준다
 		if( !entity.getName().equals(model.getName()) ) {

@@ -50,7 +50,7 @@ public class OrganizationsEntity {
 	@Column(name = "NAME")
 	private String name;
 	
-	@ManyToOne(fetch=FetchType.EAGER , cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "PAR_CODE_ID")
 	private OrganizationsEntity parent;
 	
