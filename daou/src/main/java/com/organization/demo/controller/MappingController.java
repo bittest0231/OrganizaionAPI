@@ -1,14 +1,18 @@
 package com.organization.demo.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.organization.demo.entity.OrganizationsEntity;
+import com.organization.demo.exception.InvalidDataException;
 import com.organization.demo.model.DeptModel;
 import com.organization.demo.model.ErrorBody400;
 import com.organization.demo.model.ErrorBody500;
@@ -41,10 +45,20 @@ public class MappingController {
 				
 				if("dept".equals(searchType)) {
 					// 부서 키워드로 검색
-					return orgService.getOnlyOrgFromKeyword(searchType, searchKeyword);
+					try {
+						return orgService.getOnlyOrgFromKeyword(searchType, searchKeyword);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}else{
 					// 부서원 키워드로 검색
-					return orgService.getOrgFromKeyword(searchType, searchKeyword);
+					try {
+						return orgService.getOrgFromKeyword(searchType, searchKeyword);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}else {
 				// 키워드 비어있음
@@ -65,10 +79,20 @@ public class MappingController {
 			// 기준 부서코드로 검색
 			if(deptOnly) {
 				// 부서만 검색
-				return orgService.getOnlyOrganizations(deptCode);
+				try {
+					return orgService.getOnlyOrganizations(deptCode);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}else{
 				// 부서, 부서원 검색
-				return orgService.getOrganizations(deptCode);
+				try {
+					return orgService.getOrganizations(deptCode);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}else {
 			// 기준 부서코드 비어있음
@@ -82,11 +106,24 @@ public class MappingController {
 		// searchType 사용하지 않고, deptCode 사용하지 않을 경우에 
 		if(deptOnly) {
 			// deptOnly 파라미터만 사용 될 때
-			return orgService.getOnlyOrganizations();
+			try {
+				return orgService.getOnlyOrganizations();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}else {
 			// 모든 파라미터가 사용되지 않을 때
-			return orgService.getOrganizations();
+			try {
+				return orgService.getOrganizations();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
+		// TODO
+		return ResponseEntity.ok(null);
 	}
 	
 	
@@ -100,32 +137,67 @@ public class MappingController {
 	 * */
 	@PostMapping("/dept")
 	public ResponseEntity<?> insertDept(@RequestBody DeptModel model) {
-
-		// 입력에 필요로 하는 값이 null 이거나 빈값인 경우 체크
-		if(model.getCode() == null || "".equals(model.getCode())  
-			|| model.getName() == null || "".equals(model.getName())
-			|| model.getType() == null || "".equals(model.getType()) ) 
-		{
-			return ResponseEntity.badRequest().body(ErrorBody400.builder().message("요청값이 적절하지 않습니다.").build());	
-		}
 		
 		OrganizationsEntity entity = null;
 		
 		try {
 			entity = orgService.insertDept(model);
+		}catch(InvalidDataException ide) {
+			
+			return ResponseEntity.badRequest().body(
+					ErrorBody400
+					.builder()
+					.message(ide.getMessage())
+					.build());
 		}catch(Exception e) {
-			return ResponseEntity.internalServerError().body(ErrorBody500.builder().message("내부 서버 오류가 발생했습니다.").build());	
+//			e.printStackTrace();
+			
+			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());	
 		}
-		
-		// 부모코드가 존재하지 않는 경우
-		if(entity==null) {
-			return ResponseEntity.badRequest().body(ErrorBody400.builder().message("일치하는 부모코드가 없습니다.").build());	
-		} 
 		
 		return ResponseEntity.ok(entity);
 	}
-	//@PutMapping("/dept/{deptId}")
-	//@DeleteMapping("/dept/{deptId}")
+	
+	// 부서정보 업데이트
+	@PutMapping("/dept/{deptId}")
+	public ResponseEntity<?> updateDept(@PathVariable long deptId, @RequestBody DeptModel model) {
+		
+		OrganizationsEntity entity = null;
+		
+		try {
+			
+			entity = orgService.updateDept(deptId, model);
+			
+		} catch (InvalidDataException ide) {
+			
+			return ResponseEntity.badRequest().body(
+					ErrorBody400
+					.builder()
+					.message(ide.getMessage())
+					.build());
+		} catch (Exception e) {
+			
+			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());
+		}
+		
+		return ResponseEntity.ok(entity);
+	}
+	
+	@DeleteMapping("/dept/{deptId}")
+	public ResponseEntity<?> deleteDept(@PathVariable long deptId) {
+		
+		try {
+			orgService.deleteDept(deptId);
+		} catch (InvalidDataException ide) {
+			
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
+		} catch (Exception e) {
+			
+			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());	
+		}
+		
+		return null;
+	}
 	
 	//TODO 부서원 관리 API
 	//@PostMapping("/member")

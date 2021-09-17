@@ -9,11 +9,11 @@ import lombok.Setter;
 public class ErrorBody500 {
 	
 	private String code = "INTERNAL_SERVER_ERROR";
-	private String message;
+	private String message = "내부 서버 오류가 발생했습니다.";
 	
 	@Builder
-	public ErrorBody500(String message) {
+	public ErrorBody500() {
 		
-		this.message = message; 
+//		this.message = message; 
 	}
 }
