@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class OnlyOrganizationWithParentResult {
 
-	private long id;
+	private Long id;
 	private String code;
 	private String name;
 	private String type;

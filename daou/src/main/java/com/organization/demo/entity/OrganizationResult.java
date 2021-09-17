@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class OrganizationResult {
 
-	private long id;
+	private Long id;
 	private String code;
 	private String name;
 	private String type;

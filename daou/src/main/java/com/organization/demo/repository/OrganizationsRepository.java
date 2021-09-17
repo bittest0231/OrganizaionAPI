@@ -8,15 +8,17 @@ import org.springframework.stereotype.Repository;
 import com.organization.demo.entity.OrganizationsEntity;
 
 @Repository
-public interface OrganizationsRepository extends JpaRepository<OrganizationsEntity, Integer>{
+public interface OrganizationsRepository extends JpaRepository<OrganizationsEntity, Long>{
 	
-	OrganizationsEntity findById(long id);
+//	OrganizationsEntity findById(Long id);
+	
+	List<OrganizationsEntity> findByIdIn(List<Long> id);
 	
 	List<OrganizationsEntity> findByCode(String code);
 	
 	List<OrganizationsEntity> findByNameContains(String name);
 
-	void deleteById(long id);
+	void deleteById(Long id);
 	
 	
 }

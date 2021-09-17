@@ -1,11 +1,11 @@
 package com.organization.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.stereotype.Service;
 
 import com.organization.demo.entity.MemberEntity;
@@ -81,16 +81,27 @@ public class OrganizationsService {
 	
 	
 	// 하나의 부서 가져오기
-	public OrganizationsEntity getDeptOne(long id) throws Exception {
+	public OrganizationsEntity getDeptOne(Long id) throws Exception {
 		
-		OrganizationsEntity result = OrgRepo.findById(id);
+//		Optional<OrganizationsEntity> result = OrgRepo.findById(id);
+//		return result.get();
+		
+		return OrgRepo.findById(id)
+				.orElseThrow(()-> 
+				new InvalidDataException("일치하는 부서가 존재하지 않습니다.")
+			);
+	}
+	
+	
+	public List<OrganizationsEntity> getDeptMany(List<Long> idList) throws Exception {
+		
+		List<OrganizationsEntity> result = OrgRepo.findByIdIn(idList);
 		
 		return result;
 	}
 	
-	
 	// 부서 추가
-	public OrganizationsEntity insertDept(DeptModel model) throws Exception {
+	public OrganizationsEntity createDept(DeptModel model) throws Exception {
 		
 		// 입력에 필요로 하는 값이 null 이거나 빈값인 경우 체크
 		if(model.getCode() == null || "".equals(model.getCode())  
@@ -100,11 +111,15 @@ public class OrganizationsService {
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
 		}
 		
-		
-		OrganizationsEntity parentEntity = getDeptOne(model.getParentId());
-		
-		if(parentEntity == null) {
+		OrganizationsEntity parentEntity = null;
+		try {
+			parentEntity = getDeptOne(model.getParentId());
+			
+		}catch(InvalidDataException ide) {
 			throw new InvalidDataException("일치하는 부모코드가 없습니다.");
+			
+		}catch(Exception e) {
+			throw new Exception();
 		}
 		
 		return OrgRepo.save(
@@ -119,20 +134,24 @@ public class OrganizationsService {
 	}
 	
 	// 부서 업데이트
-	public OrganizationsEntity updateDept(long id, DeptModel model) throws Exception  {
+	public OrganizationsEntity updateDept(Long id, DeptModel model) throws Exception  {
 		
 		OrganizationsEntity entity = null;
 		
 		try {
 			entity = getDeptOne(id);
-		} catch (Exception e) {
+			
+		} catch(InvalidDataException ide){
+			new InvalidDataException(ide.getMessage());
+			
+		}catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception();
 		}
 		
-		if(entity == null) {
-			throw new InvalidDataException("일치하는 부서코드가 없습니다.");
-		}
+//		if(entity == null) {
+//			throw new InvalidDataException("일치하는 부서코드가 없습니다.");
+//		}
 		
 		// 각각의 정보가 다른경우만 set 해준다
 		if( !entity.getName().equals(model.getName()) ) {
@@ -149,12 +168,17 @@ public class OrganizationsService {
 			OrganizationsEntity parentEntity = null;
 			try {
 				parentEntity = getDeptOne(model.getParentId());
-			} catch (Exception e) {
+				
+			} catch(InvalidDataException ide) {
+				throw new InvalidDataException("일치하는 부모코드가 없습니다.");
+				
+			}catch(Exception e) {
 				throw new Exception();
 			}
-			if(parentEntity == null) {
-				throw new InvalidDataException("일치하는 부모코드가 없습니다.");
-			}
+			
+//			if(parentEntity == null) {
+//				throw new InvalidDataException("일치하는 부모코드가 없습니다.");
+//			}
 			
 			entity.setParent(parentEntity);
 		}
@@ -164,20 +188,23 @@ public class OrganizationsService {
 	
 	// 부서 삭제
 	@Transactional
-	public void deleteDept(long id) throws Exception  {
+	public void deleteDept(Long id) throws Exception  {
 		
 		OrganizationsEntity entity = null;
 		
 		try {
 			entity = getDeptOne(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+			
+		} catch(InvalidDataException ide) {
+			throw new InvalidDataException(ide.getMessage());
+			
+		}catch(Exception e) {
 			throw new Exception();
 		}
 		
-		if(entity == null) {
-			throw new InvalidDataException("일치하는 부서코드가 없습니다.");
-		}
+//		if(entity == null) {
+//			throw new InvalidDataException("일치하는 부서코드가 없습니다.");
+//		}
 		if(entity.getMembers().size() > 0) {
 			throw new InvalidDataException("부서에 속한 부서원이 존재합니다.");
 		}
@@ -185,11 +212,7 @@ public class OrganizationsService {
 			throw new InvalidDataException("하위 부서가 존재합니다.");
 		}
 		
-		try {
-			OrgRepo.deleteById(id);
-		}catch(Exception e) {
-			throw new Exception();
-		}
+		OrgRepo.deleteById(id);
 	}
 	
 	

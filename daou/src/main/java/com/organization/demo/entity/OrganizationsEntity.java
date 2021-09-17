@@ -33,7 +33,7 @@ public class OrganizationsEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@Column(name = "CODE_ID")
 	private String code;

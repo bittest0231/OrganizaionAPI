@@ -11,6 +11,6 @@ public class DeptModel {
 	private String code;
 	private String name;
 	private String type;
-	private long parentId;
+	private Long parentId;
 	
 }

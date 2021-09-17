@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.organization.demo.entity.MemberEntity;
 import com.organization.demo.entity.OrganizationsEntity;
 import com.organization.demo.exception.InvalidDataException;
 import com.organization.demo.model.DeptModel;
 import com.organization.demo.model.ErrorBody400;
 import com.organization.demo.model.ErrorBody500;
+import com.organization.demo.model.MemberModel;
+import com.organization.demo.service.MemberService;
 import com.organization.demo.service.OrganizationsService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,8 @@ import lombok.extern.log4j.Log4j2;
 public class MappingController {
 
 	private final OrganizationsService orgService;
+	
+	private final MemberService memService;
 	
 	// GET 조직도 조회 API
 	@GetMapping("/organizations")
@@ -136,22 +141,17 @@ public class MappingController {
 	 * 
 	 * */
 	@PostMapping("/dept")
-	public ResponseEntity<?> insertDept(@RequestBody DeptModel model) {
+	public ResponseEntity<?> createDept(@RequestBody DeptModel model) {
 		
 		OrganizationsEntity entity = null;
 		
 		try {
-			entity = orgService.insertDept(model);
+			entity = orgService.createDept(model);
+			
 		}catch(InvalidDataException ide) {
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
 			
-			return ResponseEntity.badRequest().body(
-					ErrorBody400
-					.builder()
-					.message(ide.getMessage())
-					.build());
 		}catch(Exception e) {
-//			e.printStackTrace();
-			
 			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());	
 		}
 		
@@ -160,50 +160,97 @@ public class MappingController {
 	
 	// 부서정보 업데이트
 	@PutMapping("/dept/{deptId}")
-	public ResponseEntity<?> updateDept(@PathVariable long deptId, @RequestBody DeptModel model) {
+	public ResponseEntity<?> updateDept(@PathVariable Long deptId, @RequestBody DeptModel model) {
 		
 		OrganizationsEntity entity = null;
 		
 		try {
-			
 			entity = orgService.updateDept(deptId, model);
 			
 		} catch (InvalidDataException ide) {
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
 			
-			return ResponseEntity.badRequest().body(
-					ErrorBody400
-					.builder()
-					.message(ide.getMessage())
-					.build());
 		} catch (Exception e) {
-			
 			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());
 		}
 		
 		return ResponseEntity.ok(entity);
 	}
 	
+	// 부서 삭제
 	@DeleteMapping("/dept/{deptId}")
-	public ResponseEntity<?> deleteDept(@PathVariable long deptId) {
+	public ResponseEntity<?> deleteDept(@PathVariable Long deptId) {
 		
 		try {
 			orgService.deleteDept(deptId);
+			
 		} catch (InvalidDataException ide) {
-			
 			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
-		} catch (Exception e) {
 			
+		} catch (Exception e) {
 			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());	
 		}
 		
 		return null;
 	}
 	
-	//TODO 부서원 관리 API
-	//@PostMapping("/member")
-	//@PutMapping("/member/{memberId}")
-	//@DeleteMapping("/member/{memberId}")
+	// 부서원 추가
+	@PostMapping("/member")
+	public ResponseEntity<?> createMember(@RequestBody MemberModel model) {
+		
+		MemberEntity result = null;
+		
+		try {
+			
+			result = memService.createMember(model);
+			
+		} catch (InvalidDataException ide) {
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
+			
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());
+		}
+		
+		return ResponseEntity.ok(result);
+	}
 	
+	// 부서원 수정
+	@PutMapping("/member/{memberId}")
+	public ResponseEntity<?> updateMemeber(@PathVariable Long memberId, @RequestBody MemberModel model) {
+		
+		MemberEntity result = null;
+		
+		try {
+			result = memService.updateMember(memberId, model);
+			
+		} catch (InvalidDataException ide) {
+			
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
+		} catch (Exception e) {
+			
+//			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());
+		}
+		
+		return ResponseEntity.ok(result);
+	}
+	
+	// 부서원 삭제
+	@DeleteMapping("/member/{memberId}")
+	public ResponseEntity<?> deleteMember(@PathVariable Long memberId) {
+		
+		try {
+			memService.deleteMember(memberId);
+			
+		} catch(InvalidDataException ide) {
+			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
+			
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());
+		}
+		
+		return null;
+	}
 	
 
 	
