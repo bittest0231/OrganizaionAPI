@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.organization.demo.entity.MemberEntity;
@@ -18,11 +19,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 
+	@Autowired
 	private final OrganizationsService orgService;
 	
+	@Autowired
 	private final MemberRepository MemRepo;
 	
-	
+	// 부서원 한명 ID로 조회
 	public MemberEntity getMemberOne(Long id) throws Exception {
 		
 		return MemRepo.findById(id)
@@ -34,7 +37,8 @@ public class MemberService {
 	// 부서원 추가
 	public MemberEntity createMember(MemberModel model) throws Exception {
 
-		if( model.getName() == null || "".equals(model.getName()) ) 
+		if( model.getName() == null || "".equals(model.getName()) 
+			|| model.getTeam() == null ) 
 		{
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
 		}
