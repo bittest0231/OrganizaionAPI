@@ -48,10 +48,9 @@ public class MemberService {
 				deptList = orgService.getDeptMany(model.getTeam());
 				
 			} catch (Exception e) {
-				e.printStackTrace();
-				throw new Exception();
+				throw e;
 			}
-			// 받아온 부서코드의 사이즈가 
+			// 받아온 부서코드의 사이즈가 다를경우
 			if(deptList.size() < 1 && deptList.size() != model.getTeam().size() ) {
 				throw new InvalidDataException("존재하지 않는 부서코드가 포함되어 있습니다.");
 			}
@@ -69,7 +68,7 @@ public class MemberService {
 						.build()
 					);
 		}catch(Exception e) {
-			throw new Exception();
+			throw e;
 		}
 		
 		return result;
@@ -90,11 +89,10 @@ public class MemberService {
 			entity = getMemberOne(memberId);
 			
 		} catch(InvalidDataException ide){
-			throw new InvalidDataException(ide.getMessage());
+			throw ide;
 			
 		}catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception();
+			throw e;
 		}
 		
 		
@@ -109,7 +107,7 @@ public class MemberService {
 			deptList = orgService.getDeptMany(model.getTeam());
 			
 		} catch (Exception e) {
-			throw new Exception();
+			throw e;
 		}
 		// 포함될 부서 체크
 		if(deptList.size() != model.getTeam().size() ) {
@@ -130,10 +128,10 @@ public class MemberService {
 			getMemberOne(id);
 			
 		}catch (InvalidDataException ide) {
-			throw new InvalidDataException(ide.getMessage()); 
+			throw ide; 
 			
 		}catch (Exception e) {
-			throw new Exception(); 
+			throw e;
 		}
 		
 		MemRepo.deleteById(id);

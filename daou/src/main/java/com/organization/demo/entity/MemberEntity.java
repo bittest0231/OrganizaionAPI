@@ -37,10 +37,6 @@ public class MemberEntity {
 	
 	private boolean manager;
 	
-//	@ManyToOne(fetch=FetchType.EAGER)
-//	@JoinColumn(name="TEAM_CODE")
-//	private OrganizationsEntity team;
-
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
 			name = "MEMBER_TEAM"

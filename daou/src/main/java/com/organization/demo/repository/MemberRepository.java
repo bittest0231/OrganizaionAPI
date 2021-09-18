@@ -13,5 +13,4 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long>{
 
 	List<MemberEntity> findByNameContains(String name);
 
-//	Optional<MemberEntity> findById(Long id);
 }

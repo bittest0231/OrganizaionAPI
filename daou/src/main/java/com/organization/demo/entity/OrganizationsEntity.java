@@ -50,15 +50,16 @@ public class OrganizationsEntity {
 	@Column(name = "NAME")
 	private String name;
 	
+	// 부서의 부모 부모객체
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "PAR_CODE_ID")
 	private OrganizationsEntity parent;
 	
-	
+	// 부서에 포함된 부서원객체
 	@ManyToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.LAZY)
 	private List<MemberResult> members ;
 	
-	
+	// 부서의 하위 부서객체
 	@OneToMany(fetch=FetchType.LAZY , mappedBy= "parent")
 	private List<OrganizationsEntity> children = new ArrayList<>();
 
