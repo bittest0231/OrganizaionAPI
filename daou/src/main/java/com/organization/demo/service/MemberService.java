@@ -96,10 +96,6 @@ public class MemberService {
 			throw new Exception();
 		}
 		
-//		if(entity == null) {
-//			throw new InvalidDataException("일치하는 부서원이 없습니다.");
-//		}
-		
 		
 		List<OrganizationsEntity> deptList = null;
 		
@@ -112,6 +108,10 @@ public class MemberService {
 			
 		} catch (Exception e) {
 			throw new Exception();
+		}
+		// 포함될 부서 체크
+		if(deptList.size() != model.getTeam().size() ) {
+			throw new InvalidDataException("존재하지 않는 부서코드가 포함되어 있습니다.");
 		}
 		
 		entity.setTeam(deptList);

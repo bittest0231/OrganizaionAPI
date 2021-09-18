@@ -1,6 +1,7 @@
 package com.organization.demo.repositoryTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.organization.demo.entity.MemberEntity;
 import com.organization.demo.entity.OrganizationsEntity;
+import com.organization.demo.exception.InvalidDataException;
 import com.organization.demo.model.DeptModel;
 import com.organization.demo.model.MemberModel;
 import com.organization.demo.repository.MemberRepository;
@@ -34,7 +36,7 @@ public class FuntionTest {
 	@Autowired
 	OrganizationsService orgService;
 	
-	@DisplayName("부서원 추가 메소드 테스트")
+	@DisplayName("[부서원][추가]")
 	@Test
 	void createMemberTest() {
 		
@@ -63,7 +65,67 @@ public class FuntionTest {
 		}
 	}
 	
-	@DisplayName("부서원 수정 메소드 테스트")
+	@DisplayName("[부서원][추가][이름 공백으로 인한 오류]")
+	@Test
+	void createMemberFailTest() throws Exception {
+
+		
+		// 이름 공백으로 넘어온 경우
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(1L);
+			
+			memService.createMember(MemberModel
+					.builder()
+					.name("")
+					.manager(false)
+					.team(team)
+					.build());
+		});
+		
+		String message = exception.getMessage();
+		assertEquals("요청값이 적절하지 않습니다.", message);
+		
+		// 이름 파라미터가 애초에 넘어오지 않은 경우
+		InvalidDataException exception2 = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(1L);
+			
+			memService.createMember(MemberModel
+					.builder()
+					.manager(false)
+					.team(team)
+					.build());
+		});
+		
+		message = exception2.getMessage();
+		assertEquals("요청값이 적절하지 않습니다.", message);
+	}
+	
+	@DisplayName("[부서원][추가][존재하지 않는 부서로 인한 오류]")
+	@Test
+	void createMemberFailTest2() throws Exception {
+		
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(0L);
+			
+			memService.createMember(MemberModel
+					.builder()
+					.name("테스트")
+					.manager(false)
+					.team(team)
+					.build());
+		});
+		
+		String message = exception.getMessage();
+		assertEquals("존재하지 않는 부서코드가 포함되어 있습니다.", message);
+	}
+	
+	@DisplayName("[부서원][수정]")
 	@Test
 	void updateMemberTest() {
 		MemberEntity toUpdate = null;
@@ -95,7 +157,91 @@ public class FuntionTest {
 		assertEquals( toUpdate.getTeam().get(0).getId(), 2L);
 	}
 	
-	@DisplayName("부서원 삭제 메소드 테스트")
+	@DisplayName("[부서원][수정][요청값 오류로 인한 오류]")
+	@Test
+	void updateMemberFailTest() {
+		
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(1L);
+			
+			memService.updateMember(1L,
+					MemberModel
+					.builder()
+					.name("")		// 이름 공백
+					.manager(false)
+					.team(team)
+					.build());
+		});
+		
+		String message = exception.getMessage();
+		assertEquals("요청값이 적절하지 않습니다.", message);
+		
+		InvalidDataException exception2 = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(1L);
+			
+			memService.updateMember(1L,
+					MemberModel
+					.builder()
+					// 이름 파라미터 미존재
+					.manager(false)
+					.team(team)
+					.build());
+		});
+		
+		message = exception2.getMessage();
+		assertEquals("요청값이 적절하지 않습니다.", message);
+	}
+	@DisplayName("[부서원][수정][존재하지 않는 부서원으로 인한 오류]")
+	@Test
+	void updateMemberFailTest2() {
+		
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(1L);
+			
+			memService.updateMember(
+					0L,		// 존재하지 않는 부서원
+					
+					MemberModel
+					.builder()
+					.name("존재하지않는부서원")
+					.manager(false)
+					.team(team)
+					.build());
+		});
+		
+		String message = exception.getMessage();
+		assertEquals("일치하는 부서원이 존재하지 않습니다.", message);
+	}
+	@DisplayName("[부서원][수정][존재하지 않는 부서로 인한 오류]")
+	@Test
+	void updateMemberFailTest3() {
+
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(0L);	// 존재하지 않는 부서
+			
+			memService.updateMember(1L,
+					MemberModel
+					.builder()
+					.name("존재하지않는부서")
+					.manager(false)
+					.team(team)
+					.build());
+		});
+		
+		String message = exception.getMessage();
+		assertEquals("존재하지 않는 부서코드가 포함되어 있습니다.", message);
+	}
+	
+	
+	@DisplayName("[부서원][삭제]")
 	@Test
 	void deleteMemberTest() {
 		
@@ -110,7 +256,19 @@ public class FuntionTest {
 	    assertEquals(true, memRepo.findById(2L).isEmpty());
 	}
 	
-	@DisplayName("부서 추가 메소드 테스트")
+	@DisplayName("[부서원][삭제][존재하지 않는 부서원으로 인한 오류]")
+	@Test
+	void deleteMemberFailTest() {
+		
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			memService.deleteMember( 0L );
+		});
+		
+		String message = exception.getMessage();
+		assertEquals("일치하는 부서원이 존재하지 않습니다.", message);
+	}
+	
+	@DisplayName("[부서][추가]")
 	@Test
 	void createDept() {
 		
@@ -131,7 +289,107 @@ public class FuntionTest {
 		assertEquals( toSave.getParent().getId(), 3L);
 	}
 	
-	@DisplayName("부서 수정 메소드 테스트")
+	@DisplayName("[부서][추가][요청값 오류]")
+	@Test
+	void createDeptFail() {
+		
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("")		// 코드 공백
+					.name("테스트부서")
+					.parentId(3L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception.getMessage());
+		
+		InvalidDataException exception2 = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+									// 코드 공백
+					.name("테스트부서")
+					.parentId(3L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception2.getMessage());
+		
+		InvalidDataException exception3 = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("000")
+					.name("")		// 이름 공백
+					.parentId(3L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception3.getMessage());
+		
+		InvalidDataException exception4 = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("000")
+									// 이름 공백
+					.parentId(3L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception4.getMessage());
+		
+		InvalidDataException exception5 = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("000")
+					.name("이름")
+					.parentId(null)			// 부모코드 공백
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception5.getMessage());
+		
+		InvalidDataException exception5_ = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("000")
+					.name("이름")
+										// 부모코드 공백
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception5_.getMessage());
+		
+		InvalidDataException exception6 = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("000")
+					.name("이름")
+					.parentId(3L)
+					.type("")		// 타입 공백
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception6.getMessage());
+		
+		InvalidDataException exception7 = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("000")
+					.name("이름")
+					.parentId(3L)
+									// 타입 공백
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception7.getMessage());
+	}
+	
+	@DisplayName("[부서][추가][부모코드 오류]")
+	@Test
+	void createDeptFail2() {
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			orgService.createDept(DeptModel.builder()
+					.code("000")
+					.name("이름")
+					.parentId(0L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("일치하는 부모코드가 없습니다.", exception.getMessage());
+	}
+	
+	
+	@DisplayName("[부서][수정]")
 	@Test
 	void updateDept() {
 		
@@ -154,7 +412,77 @@ public class FuntionTest {
 		assertEquals( toUpdate.getParent().getId(), 2L);
 	}
 	
-	@DisplayName("부서 삭제 메소드 테스트")
+	@DisplayName("[부서][수정][요청값 오류]")
+	@Test
+	void updateDeptFail() {
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			orgService.updateDept(
+					1L
+					,DeptModel.builder()
+					.code("")
+					.name("이름")
+					.parentId(0L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception.getMessage());
+		InvalidDataException exception2 = assertThrows(InvalidDataException.class, ()->{
+			orgService.updateDept(
+					1L
+					,DeptModel.builder()
+					.code("000")
+					.name("")
+					.parentId(0L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception2.getMessage());
+		InvalidDataException exception3 = assertThrows(InvalidDataException.class, ()->{
+			orgService.updateDept(
+					1L
+					,DeptModel.builder()
+					.code("000")
+					.name("이름")
+					.parentId(0L)
+					.type("")
+					.build());
+		});
+		assertEquals("요청값이 적절하지 않습니다.", exception3.getMessage());
+	}
+	
+	@DisplayName("[부서][수정][존재하지 않는 부서 오류]")
+	@Test
+	void updateDeptFail2() {
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			orgService.updateDept(
+					0L
+					,DeptModel.builder()
+					.code("000")
+					.name("이름")
+					.parentId(2L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("일치하는 부서가 존재하지 않습니다.", exception.getMessage());
+	}
+	
+	@DisplayName("[부서][수정][존재하지 않는 부모코드 포함 오류]")
+	@Test
+	void updateDeptFail3() {
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			orgService.updateDept(
+					2L
+					,DeptModel.builder()
+					.code("000")
+					.name("이름")
+					.parentId(0L)
+					.type("Division")
+					.build());
+		});
+		assertEquals("일치하는 부모코드가 없습니다.", exception.getMessage());
+	}
+	
+	@DisplayName("[부서][삭제]")
 	@Test
 	void deleteDept() {
 		
@@ -181,4 +509,13 @@ public class FuntionTest {
 	    assertEquals(true, orgRepo.findById(toSave.getId()).isEmpty());
 	}
 	
+	@DisplayName("[부서][삭제][존재하지 않는 부서 오류]")
+	@Test
+	void deleteDeptFail() {
+		
+		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
+			orgService.deleteDept(0L);					
+		});
+		assertEquals("일치하는 부서가 존재하지 않습니다.", exception.getMessage());
+	}
 }

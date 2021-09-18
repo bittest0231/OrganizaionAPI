@@ -132,14 +132,13 @@ public class MappingController {
 	}
 	
 	
-	// 부서 추가
 	/**
-	 *
+	 * 부서관련
 	 * {
   		"code" : "140", "name":"테스트팀", "type":"Division","parentId":1
 		}
-	 * 
 	 * */
+	// 부서 추가
 	@PostMapping("/dept")
 	public ResponseEntity<?> createDept(@RequestBody DeptModel model) {
 		
@@ -194,6 +193,12 @@ public class MappingController {
 		return null;
 	}
 	
+	/**
+	 * 부서원 관련
+	 * {
+  		"name":"테스트인원", "manager": true, "team":[1,2]
+		}
+	 * */
 	// 부서원 추가
 	@PostMapping("/member")
 	public ResponseEntity<?> createMember(@RequestBody MemberModel model) {
@@ -228,7 +233,6 @@ public class MappingController {
 			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
 		} catch (Exception e) {
 			
-//			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());
 		}
 		

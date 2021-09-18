@@ -1,7 +1,6 @@
 package com.organization.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -83,9 +82,6 @@ public class OrganizationsService {
 	// 하나의 부서 가져오기
 	public OrganizationsEntity getDeptOne(Long id) throws Exception {
 		
-//		Optional<OrganizationsEntity> result = OrgRepo.findById(id);
-//		return result.get();
-		
 		return OrgRepo.findById(id)
 				.orElseThrow(()-> 
 				new InvalidDataException("일치하는 부서가 존재하지 않습니다.")
@@ -101,12 +97,14 @@ public class OrganizationsService {
 	}
 	
 	// 부서 추가
+	@Transactional
 	public OrganizationsEntity createDept(DeptModel model) throws Exception {
 		
 		// 입력에 필요로 하는 값이 null 이거나 빈값인 경우 체크
 		if(model.getCode() == null || "".equals(model.getCode())  
 			|| model.getName() == null || "".equals(model.getName())
-			|| model.getType() == null || "".equals(model.getType()) ) 
+			|| model.getType() == null || "".equals(model.getType()) 
+			|| model.getParentId() == null) 
 		{
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
 		}
@@ -136,13 +134,20 @@ public class OrganizationsService {
 	// 부서 업데이트
 	public OrganizationsEntity updateDept(Long id, DeptModel model) throws Exception  {
 		
+		// 입력에 필요로 하는 값이 공백값인 경우 체크
+		if("".equals(model.getCode()) || "".equals(model.getName()) || "".equals(model.getType()) ) 
+		{
+			throw new InvalidDataException("요청값이 적절하지 않습니다.");
+		}
+		
+		
 		OrganizationsEntity entity = null;
 		
 		try {
 			entity = getDeptOne(id);
 			
 		} catch(InvalidDataException ide){
-			new InvalidDataException(ide.getMessage());
+			throw new InvalidDataException(ide.getMessage());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -172,10 +177,6 @@ public class OrganizationsService {
 				throw new Exception();
 			}
 			
-//			if(parentEntity == null) {
-//				throw new InvalidDataException("일치하는 부모코드가 없습니다.");
-//			}
-			
 			entity.setParent(parentEntity);
 		}
 		
@@ -198,9 +199,6 @@ public class OrganizationsService {
 			throw new Exception();
 		}
 		
-//		if(entity == null) {
-//			throw new InvalidDataException("일치하는 부서코드가 없습니다.");
-//		}
 		if(entity.getMembers().size() > 0) {
 			throw new InvalidDataException("부서에 속한 부서원이 존재합니다.");
 		}
