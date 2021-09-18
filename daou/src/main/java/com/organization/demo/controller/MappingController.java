@@ -34,7 +34,16 @@ public class MappingController {
 	
 	private final MemberService memService;
 	
-	// GET 조직도 조회 API
+	/**
+	 * 조직도 조회
+	 * 
+	 * @author 박세진
+	 * @param deptCode 부서코드
+	 * @param deptOnly 부서정보만 출력 여부
+	 * @param searchType 검색 대상 : "dept" || "member"
+	 * @param searchKeyword - 검색 키워드 
+	 * @return ResponseEntity http 응답객체에 결과값을 담아서 return 
+	 * */
 	@GetMapping("/organizations")
 	public ResponseEntity<Object> selectOrganizations(
 			@RequestParam(value="deptCode", required = false) String deptCode
@@ -47,6 +56,7 @@ public class MappingController {
 				
 				if(searchKeyword != null && !"".equals(searchKeyword)) {
 					
+					// 키워드 검색으로 진행되는 경우
 					return ResponseEntity.ok(orgService.getOrgFromKeyword(searchType, searchKeyword));
 					
 				}else {
@@ -58,7 +68,6 @@ public class MappingController {
 			return ResponseEntity.badRequest().body(ErrorBody400.builder().message(ide.getMessage()).build());
 			
 		}catch (Exception e) {
-			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(ErrorBody500.builder().build());
 		}
 		/*
@@ -104,17 +113,26 @@ public class MappingController {
 		}
 	}
 	
-	
 	/**
-	 * 부서관련
+	 * 부서 추가
+	 * 
+	 * @author 박세진
+	 * @param DeptModel 부서관련 정보 객체
+	 * 			- code 부서 코드
+	 * 			- name 부서 명칭
+	 * 			- type 부서 타입
+	 * 			- parentId 해당 부서의 부모 부서 : 부모부서의 하위로 위치시킴
+	 * 
+	 * Param Example
 	 * {
   		"code" : "140",		필수
   		"name":"테스트팀", 	필수
   		"type":"Division",	필수
   		"parentId":1		필수
 		}
+	 *  
+	 * @return ResponseEntity http 응답객체에 결과값을 담아서 return
 	 * */
-	// 부서 추가
 	@PostMapping("/dept")
 	public ResponseEntity<Object> createDept(@RequestBody DeptModel model) {
 		
@@ -133,7 +151,26 @@ public class MappingController {
 		return ResponseEntity.ok(entity);
 	}
 	
-	// 부서정보 업데이트
+	/**
+	 * 부서 수정
+	 * 
+	 * @author 박세진
+	 * @param DeptModel 부서관련 정보 객체
+	 * 			- code 부서 코드
+	 * 			- name 부서 명칭
+	 * 			- type 부서 타입
+	 * 			- parentId 해당 부서의 부모 부서 : 부모부서의 하위로 위치시킴
+	 * 
+	 * Param Example
+	 * {
+  		"code" : "140",		
+  		"name":"테스트팀", 	
+  		"type":"Division",	
+  		"parentId":1		
+		}
+	 *  
+	 * @return ResponseEntity http 응답객체에 결과값을 담아서 return 
+	 * */
 	@PutMapping("/dept/{deptId}")
 	public ResponseEntity<Object> updateDept(@PathVariable Long deptId, @RequestBody DeptModel model) {
 		
@@ -152,7 +189,13 @@ public class MappingController {
 		return ResponseEntity.ok(entity);
 	}
 	
-	// 부서 삭제
+	/**
+	 * 부서 삭제
+	 * 
+	 * @author 박세진
+	 * @param deptId 부서 고유 id
+	 * @return void
+	 * */
 	@DeleteMapping("/dept/{deptId}")
 	public ResponseEntity<Object> deleteDept(@PathVariable Long deptId) {
 		
@@ -170,14 +213,22 @@ public class MappingController {
 	}
 	
 	/**
-	 * 부서원 관련
+	 * 부서원 추가
+	 * 
+	 * @author 박세진
+	 * @param MemberModel 부서원관련 정보 객체
+	 * 			- name 부서원 명칭
+	 * 			- manager 관리자 여부 관리자:true/아닌경우:false
+	 * 			- team 해당 부서원이 속하는 부서의 고유 id list 형식
+	 * Param Example
 	 * {
   		"name":"테스트인원",	필수
   		"manager": true, 
   		"team":[1,2]		필수
 		}
+	 *  
+	 * @return ResponseEntity http 응답객체에 결과값을 담아서 return
 	 * */
-	// 부서원 추가
 	@PostMapping("/member")
 	public ResponseEntity<Object> createMember(@RequestBody MemberModel model) {
 		
@@ -196,8 +247,23 @@ public class MappingController {
 		
 		return ResponseEntity.ok(result);
 	}
-	
-	// 부서원 수정
+	/**
+	 * 부서원 수정
+	 * 
+	 * @author 박세진
+	 * @param MemberModel 부서원관련 정보 객체
+	 * 			- name 부서원 명칭
+	 * 			- manager 관리자 여부 관리자:true/아닌경우:false
+	 * 			- team 해당 부서원이 속하는 부서의 고유 id list 형식
+	 * Param Example
+	 * {
+  		"name":"테스트인원",	
+  		"manager": true, 
+  		"team":[]			필수: 아무런 부서에 포함되지 않는다면 [] 비어있는 list로 받아야 한다.
+		}
+	 *  
+	 * @return ResponseEntity http 응답객체에 결과값을 담아서 return
+	 * */
 	@PutMapping("/member/{memberId}")
 	public ResponseEntity<Object> updateMemeber(@PathVariable Long memberId, @RequestBody MemberModel model) {
 		
@@ -216,8 +282,13 @@ public class MappingController {
 		
 		return ResponseEntity.ok(result);
 	}
-	
-	// 부서원 삭제
+	/**
+	 * 부서원 삭제
+	 * 
+	 * @author 박세진
+	 * @param memberId 부서 고유 id
+	 * @return void
+	 * */
 	@DeleteMapping("/member/{memberId}")
 	public ResponseEntity<Object> deleteMember(@PathVariable Long memberId) {
 		
