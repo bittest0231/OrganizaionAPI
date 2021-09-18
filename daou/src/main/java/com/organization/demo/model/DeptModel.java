@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+// 부서관련 파라미터 받아줄 모델
+
 @Getter
 @Setter
 public class DeptModel {

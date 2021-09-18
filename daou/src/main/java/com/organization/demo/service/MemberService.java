@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.organization.demo.entity.MemberEntity;
@@ -18,11 +19,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 
+	@Autowired
 	private final OrganizationsService orgService;
 	
+	@Autowired
 	private final MemberRepository MemRepo;
 	
-	
+	// 부서원 한명 ID로 조회
 	public MemberEntity getMemberOne(Long id) throws Exception {
 		
 		return MemRepo.findById(id)
@@ -34,7 +37,8 @@ public class MemberService {
 	// 부서원 추가
 	public MemberEntity createMember(MemberModel model) throws Exception {
 
-		if( model.getName() == null || "".equals(model.getName()) ) 
+		if( model.getName() == null || "".equals(model.getName()) 
+			|| model.getTeam() == null ) 
 		{
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
 		}
@@ -48,10 +52,9 @@ public class MemberService {
 				deptList = orgService.getDeptMany(model.getTeam());
 				
 			} catch (Exception e) {
-				e.printStackTrace();
-				throw new Exception();
+				throw e;
 			}
-			// 받아온 부서코드의 사이즈가 
+			// 받아온 부서코드의 사이즈가 다를경우
 			if(deptList.size() < 1 && deptList.size() != model.getTeam().size() ) {
 				throw new InvalidDataException("존재하지 않는 부서코드가 포함되어 있습니다.");
 			}
@@ -69,7 +72,7 @@ public class MemberService {
 						.build()
 					);
 		}catch(Exception e) {
-			throw new Exception();
+			throw e;
 		}
 		
 		return result;
@@ -90,11 +93,10 @@ public class MemberService {
 			entity = getMemberOne(memberId);
 			
 		} catch(InvalidDataException ide){
-			throw new InvalidDataException(ide.getMessage());
+			throw ide;
 			
 		}catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception();
+			throw e;
 		}
 		
 		
@@ -109,7 +111,7 @@ public class MemberService {
 			deptList = orgService.getDeptMany(model.getTeam());
 			
 		} catch (Exception e) {
-			throw new Exception();
+			throw e;
 		}
 		// 포함될 부서 체크
 		if(deptList.size() != model.getTeam().size() ) {
@@ -130,10 +132,10 @@ public class MemberService {
 			getMemberOne(id);
 			
 		}catch (InvalidDataException ide) {
-			throw new InvalidDataException(ide.getMessage()); 
+			throw ide; 
 			
 		}catch (Exception e) {
-			throw new Exception(); 
+			throw e;
 		}
 		
 		MemRepo.deleteById(id);

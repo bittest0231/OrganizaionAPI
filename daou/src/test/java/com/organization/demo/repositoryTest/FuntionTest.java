@@ -65,7 +65,7 @@ public class FuntionTest {
 		}
 	}
 	
-	@DisplayName("[부서원][추가][이름 공백으로 인한 오류]")
+	@DisplayName("[부서원][추가][요청값으로 인한 오류]")
 	@Test
 	void createMemberFailTest() throws Exception {
 
@@ -101,6 +101,19 @@ public class FuntionTest {
 		});
 		
 		message = exception2.getMessage();
+		assertEquals("요청값이 적절하지 않습니다.", message);
+		
+		// 팀 객체가 애초에 넘어오지 않은 경우
+		InvalidDataException exception3 = assertThrows(InvalidDataException.class, ()->{
+			
+			memService.createMember(MemberModel
+					.builder()
+					.name("이름")
+					.manager(false)
+					.build());
+		});
+		
+		message = exception3.getMessage();
 		assertEquals("요청값이 적절하지 않습니다.", message);
 	}
 	
@@ -193,6 +206,23 @@ public class FuntionTest {
 		});
 		
 		message = exception2.getMessage();
+		assertEquals("요청값이 적절하지 않습니다.", message);
+		
+		InvalidDataException exception3 = assertThrows(InvalidDataException.class, ()->{
+			
+			List<Long> team = new ArrayList<>();
+			team.add(1L);
+			
+			memService.updateMember(1L,
+					MemberModel
+					.builder()
+					.name("이름")
+					.manager(false)
+					// 부서객체 미존재
+					.build());
+		});
+		
+		message = exception3.getMessage();
 		assertEquals("요청값이 적절하지 않습니다.", message);
 	}
 	@DisplayName("[부서원][수정][존재하지 않는 부서원으로 인한 오류]")

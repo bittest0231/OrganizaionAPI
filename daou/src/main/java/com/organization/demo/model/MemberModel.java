@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+// 부서원 관련 파라미터 받아줄 모델
+
 @ToString
 @Getter
 @Setter

@@ -35,9 +35,6 @@ public class OrganizationsService {
 	@Transactional
 	public OrganizationResult getOrganizations() throws Exception{
 		
-//		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
-//		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
-		
 		long id = OrgRepo.findByType("Company").get().getId();
 		
 		return new OrganizationResult(
@@ -52,8 +49,6 @@ public class OrganizationsService {
 	@Transactional
 	public OnlyOrganizationResult getOnlyOrganizations() throws Exception{
 		
-//		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
-//		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
 		long id = OrgRepo.findByType("Company").get().getId();
 		
 		return new OnlyOrganizationResult(
@@ -67,9 +62,6 @@ public class OrganizationsService {
 	// 특정 부서 기준으로 부서, 부서원 검색 
 	@Transactional
 	public OrganizationResult getOrganizations(String deptCode) throws Exception{
-		
-//		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
-//		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
 		
 		if("".equals(deptCode))
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
@@ -85,9 +77,6 @@ public class OrganizationsService {
 	// 특정 부서 기준으로 부서만 검색
 	@Transactional
 	public OnlyOrganizationResult getOnlyOrganizations(String deptCode) throws Exception{
-		
-//		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
-//		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
 		
 		if("".equals(deptCode))
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
@@ -161,7 +150,7 @@ public class OrganizationsService {
 			throw new InvalidDataException("일치하는 부모코드가 없습니다.");
 			
 		}catch(Exception e) {
-			throw new Exception();
+			throw e;
 		}
 		OrganizationsEntity result = OrgRepo.save(
 				OrganizationsEntity
@@ -191,11 +180,11 @@ public class OrganizationsService {
 			entity = getDeptOne(id);
 			
 		} catch(InvalidDataException ide){
-			throw new InvalidDataException(ide.getMessage());
+			throw ide;
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception();
+			throw e;
 		}
 		
 		// 각각의 정보가 다른경우만 set 해준다
@@ -218,7 +207,7 @@ public class OrganizationsService {
 				throw new InvalidDataException("일치하는 부모코드가 없습니다.");
 				
 			}catch(Exception e) {
-				throw new Exception();
+				throw e;
 			}
 			
 			entity.setParent(parentEntity);
@@ -237,10 +226,10 @@ public class OrganizationsService {
 			entity = getDeptOne(id);
 			
 		} catch(InvalidDataException ide) {
-			throw new InvalidDataException(ide.getMessage());
+			throw ide;
 			
 		}catch(Exception e) {
-			throw new Exception();
+			throw e;
 		}
 		
 		if(entity.getMembers().size() > 0) {
