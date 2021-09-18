@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.organization.demo.entity.MemberEntity;
@@ -23,60 +24,113 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class OrganizationsService {
-
+	
+	@Autowired
 	private final OrganizationsRepository OrgRepo;
 	
+	@Autowired
 	private final MemberRepository MemRepo;
 	
 	// 전체 부서, 멤버 모두 검색
+	@Transactional
 	public OrganizationResult getOrganizations() throws Exception{
 		
-		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
+//		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
+//		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
 		
-		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
+		long id = OrgRepo.findByType("Company").get().getId();
+		
+		return new OrganizationResult(
+				OrgRepo
+				.findById(id)
+				.orElseThrow(()-> new InvalidDataException("일치하는 부서가 존재하지 않습니다.")
+			)
+		);
 	}
 	
 	// 전체 부서만 검색
+	@Transactional
 	public OnlyOrganizationResult getOnlyOrganizations() throws Exception{
 		
-		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
+//		final List<OrganizationsEntity> list = OrgRepo.findByCode("100");
+//		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
+		long id = OrgRepo.findByType("Company").get().getId();
 		
-		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
+		return new OnlyOrganizationResult(
+				OrgRepo
+				.findById(id)
+				.orElseThrow(()-> new InvalidDataException("일치하는 부서가 존재하지 않습니다.")
+			)
+		);
 	}
 		
 	// 특정 부서 기준으로 부서, 부서원 검색 
+	@Transactional
 	public OrganizationResult getOrganizations(String deptCode) throws Exception{
 		
-		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
+//		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
+//		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
 		
-		return list.stream().map(OrganizationResult::new).collect(Collectors.toList()).get(0);
+		if("".equals(deptCode))
+			throw new InvalidDataException("요청값이 적절하지 않습니다.");
+		
+		return new OrganizationResult(
+				OrgRepo
+				.findByCode(deptCode)
+				.orElseThrow(()-> new InvalidDataException("일치하는 부서가 존재하지 않습니다.")
+			)
+		);
 	}
 	
 	// 특정 부서 기준으로 부서만 검색
+	@Transactional
 	public OnlyOrganizationResult getOnlyOrganizations(String deptCode) throws Exception{
 		
-		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
+//		final List<OrganizationsEntity> list = OrgRepo.findByCode(deptCode);
+//		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
 		
-		return list.stream().map(OnlyOrganizationResult::new).collect(Collectors.toList()).get(0);
+		if("".equals(deptCode))
+			throw new InvalidDataException("요청값이 적절하지 않습니다.");
+		
+		return new OnlyOrganizationResult(
+				OrgRepo
+				.findByCode(deptCode)
+				.orElseThrow(()-> new InvalidDataException("일치하는 부서가 존재하지 않습니다.")
+			)
+		);
 	}
 	
 	/** 키워드 관련 검색**/
 	
-	// 특정 키워드로 검색 부서만
-	public List<OnlyOrganizationWithParentResult> getOnlyOrgFromKeyword(String searchType, String keyword) throws Exception{
+	// 특정 키워드로 검색 
+	public List<Object> getOrgFromKeyword(String searchType, String keyword) throws Exception{
 		
-		final List<OrganizationsEntity> list = OrgRepo.findByNameContains(keyword);
+		if("dept".equals(searchType.toLowerCase())) {
+			// 부서 키워드로 검색
+			final List<OrganizationsEntity> list = OrgRepo.findByNameContains(keyword);
+			
+			return list.stream().map(OnlyOrganizationWithParentResult::new).collect(Collectors.toList());
+			
+		}else if("member".equals(searchType.toLowerCase())) {
+			// 부서원 키워드로 검색
+			final List<MemberEntity> list = MemRepo.findByNameContains(keyword);
+			
+			return list.stream().map(OrganizationWithParentResult::new).collect(Collectors.toList());
+			
+		}else {
+			throw new InvalidDataException("searchType 값이 적절하지 않습니다.");
+		}
 		
-		return list.stream().map(OnlyOrganizationWithParentResult::new).collect(Collectors.toList());
 	}
 	
 	// 특정 키워드로 부서원 검색 부서포함
-	public List<OrganizationWithParentResult> getOrgFromKeyword(String searchType, String keyword) throws Exception{
-		
-		final List<MemberEntity> list = MemRepo.findByNameContains(keyword);
-		
-		return list.stream().map(OrganizationWithParentResult::new).collect(Collectors.toList());
-	}
+//	public List<OrganizationWithParentResult> getOrgFromKeyword(String searchType, String keyword) throws Exception{
+//		
+//		
+//		final List<MemberEntity> list = MemRepo.findByNameContains(keyword);
+//		
+//		return list.stream().map(OrganizationWithParentResult::new).collect(Collectors.toList());
+//	}
 	
 	
 	// 하나의 부서 가져오기

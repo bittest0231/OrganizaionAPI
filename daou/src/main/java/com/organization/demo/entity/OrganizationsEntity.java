@@ -50,13 +50,10 @@ public class OrganizationsEntity {
 	@Column(name = "NAME")
 	private String name;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "PAR_CODE_ID")
 	private OrganizationsEntity parent;
 	
-	
-//	@OneToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.LAZY)
-//	private List<MemberResult> members ;
 	
 	@ManyToMany(targetEntity = MemberEntity.class, mappedBy= "team", fetch=FetchType.LAZY)
 	private List<MemberResult> members ;
