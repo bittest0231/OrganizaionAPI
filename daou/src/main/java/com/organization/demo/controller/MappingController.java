@@ -36,7 +36,7 @@ public class MappingController {
 	
 	// GET 조직도 조회 API
 	@GetMapping("/organizations")
-	public Object selectOrganizations(
+	public ResponseEntity<Object> selectOrganizations(
 			@RequestParam(value="deptCode", required = false) String deptCode
 			,@RequestParam(value="deptOnly" , required = false) boolean deptOnly
 			,@RequestParam(value="searchType" , required = false) String searchType
@@ -47,7 +47,7 @@ public class MappingController {
 				
 				if(searchKeyword != null && !"".equals(searchKeyword)) {
 					
-					return orgService.getOrgFromKeyword(searchType, searchKeyword);
+					return ResponseEntity.ok(orgService.getOrgFromKeyword(searchType, searchKeyword));
 					
 				}else {
 					// 키워드 비어있음
@@ -108,12 +108,15 @@ public class MappingController {
 	/**
 	 * 부서관련
 	 * {
-  		"code" : "140", "name":"테스트팀", "type":"Division","parentId":1
+  		"code" : "140",		필수
+  		"name":"테스트팀", 	필수
+  		"type":"Division",	필수
+  		"parentId":1		필수
 		}
 	 * */
 	// 부서 추가
 	@PostMapping("/dept")
-	public ResponseEntity<?> createDept(@RequestBody DeptModel model) {
+	public ResponseEntity<Object> createDept(@RequestBody DeptModel model) {
 		
 		OrganizationsEntity entity = null;
 		
@@ -132,7 +135,7 @@ public class MappingController {
 	
 	// 부서정보 업데이트
 	@PutMapping("/dept/{deptId}")
-	public ResponseEntity<?> updateDept(@PathVariable Long deptId, @RequestBody DeptModel model) {
+	public ResponseEntity<Object> updateDept(@PathVariable Long deptId, @RequestBody DeptModel model) {
 		
 		OrganizationsEntity entity = null;
 		
@@ -151,7 +154,7 @@ public class MappingController {
 	
 	// 부서 삭제
 	@DeleteMapping("/dept/{deptId}")
-	public ResponseEntity<?> deleteDept(@PathVariable Long deptId) {
+	public ResponseEntity<Object> deleteDept(@PathVariable Long deptId) {
 		
 		try {
 			orgService.deleteDept(deptId);
@@ -169,12 +172,14 @@ public class MappingController {
 	/**
 	 * 부서원 관련
 	 * {
-  		"name":"테스트인원", "manager": true, "team":[1,2]
+  		"name":"테스트인원",	필수
+  		"manager": true, 
+  		"team":[1,2]		필수
 		}
 	 * */
 	// 부서원 추가
 	@PostMapping("/member")
-	public ResponseEntity<?> createMember(@RequestBody MemberModel model) {
+	public ResponseEntity<Object> createMember(@RequestBody MemberModel model) {
 		
 		MemberEntity result = null;
 		
@@ -194,7 +199,7 @@ public class MappingController {
 	
 	// 부서원 수정
 	@PutMapping("/member/{memberId}")
-	public ResponseEntity<?> updateMemeber(@PathVariable Long memberId, @RequestBody MemberModel model) {
+	public ResponseEntity<Object> updateMemeber(@PathVariable Long memberId, @RequestBody MemberModel model) {
 		
 		MemberEntity result = null;
 		
@@ -214,7 +219,7 @@ public class MappingController {
 	
 	// 부서원 삭제
 	@DeleteMapping("/member/{memberId}")
-	public ResponseEntity<?> deleteMember(@PathVariable Long memberId) {
+	public ResponseEntity<Object> deleteMember(@PathVariable Long memberId) {
 		
 		try {
 			memService.deleteMember(memberId);

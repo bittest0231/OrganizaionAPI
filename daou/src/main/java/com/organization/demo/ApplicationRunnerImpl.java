@@ -28,26 +28,26 @@ public class ApplicationRunnerImpl implements ApplicationRunner{
 	public void run(ApplicationArguments args) throws Exception {
 		
 		// 테스트 데이터 입력
-		OrganizationsEntity company = OrganizationsEntity.builder().name("ABC회사").code("100").type("Company").build(); 
+		OrganizationsEntity company = OrganizationsEntity.builder().name("ABC회사").code("S100").type("Company").build(); 
 	
-		OrganizationsEntity BS = OrganizationsEntity.builder().name("경영지원본부").code("110").type("Division").parent(company).build();
+		OrganizationsEntity BS = OrganizationsEntity.builder().name("경영지원본부").code("A110").type("Division").parent(company).build();
 		
-		OrganizationsEntity BS1 = OrganizationsEntity.builder().name("인사팀").code("111").type("Department").parent(BS).build();
-		OrganizationsEntity BS2 = OrganizationsEntity.builder().name("총무팀").code("112").type("Department").parent(BS).build();
-		OrganizationsEntity BS3 = OrganizationsEntity.builder().name("법무팀").code("113").type("Department").parent(BS).build();
+		OrganizationsEntity BS1 = OrganizationsEntity.builder().name("인사팀").code("B111").type("Department").parent(BS).build();
+		OrganizationsEntity BS2 = OrganizationsEntity.builder().name("총무팀").code("B112").type("Department").parent(BS).build();
+		OrganizationsEntity BS3 = OrganizationsEntity.builder().name("법무팀").code("B113").type("Department").parent(BS).build();
 		
-		OrganizationsEntity swDev = OrganizationsEntity.builder().name("SW개발본부").code("120").type("Division").parent(company).build(); 
+		OrganizationsEntity swDev = OrganizationsEntity.builder().name("SW개발본부").code("A120").type("Division").parent(company).build(); 
 		
-		OrganizationsEntity flatformDev = OrganizationsEntity.builder().name("플랫폼개발부").code("D121").type("Department").parent(swDev).build(); 
+		OrganizationsEntity flatformDev = OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build(); 
 
-		OrganizationsEntity flatformDev1 = OrganizationsEntity.builder().name("비즈플랫폼팀").code("D1211").type("Department").parent(flatformDev).build(); 
-		OrganizationsEntity flatformDev2 = OrganizationsEntity.builder().name("비즈서비스팀").code("D1212").type("Department").parent(flatformDev).build(); 
-		OrganizationsEntity flatformDev3 = OrganizationsEntity.builder().name("그룹웨어개발팀").code("D1213").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev1 = OrganizationsEntity.builder().name("비즈플랫폼팀").code("C1211").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev2 = OrganizationsEntity.builder().name("비즈서비스팀").code("C1212").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev3 = OrganizationsEntity.builder().name("그룹웨어개발팀").code("C1213").type("Department").parent(flatformDev).build(); 
 		
-		OrganizationsEntity bizServiceDev = OrganizationsEntity.builder().name("비즈서비스개발부").code("D122").type("Department").parent(swDev).build(); 
+		OrganizationsEntity bizServiceDev = OrganizationsEntity.builder().name("비즈서비스개발부").code("B122").type("Department").parent(swDev).build(); 
 
-		OrganizationsEntity bizServiceDev1 = OrganizationsEntity.builder().name("플랫폼서비스팀").code("D1221").type("Department").parent(bizServiceDev).build(); 
-		OrganizationsEntity bizServiceDev2 = OrganizationsEntity.builder().name("모바일개발팀").code("D1222").type("Department").parent(bizServiceDev).build(); 
+		OrganizationsEntity bizServiceDev1 = OrganizationsEntity.builder().name("플랫폼서비스팀").code("C1221").type("Department").parent(bizServiceDev).build(); 
+		OrganizationsEntity bizServiceDev2 = OrganizationsEntity.builder().name("모바일개발팀").code("C1222").type("Department").parent(bizServiceDev).build(); 
 		
 		List<OrganizationsEntity> list = Arrays.asList(
 			company,BS,BS1,BS2,BS3

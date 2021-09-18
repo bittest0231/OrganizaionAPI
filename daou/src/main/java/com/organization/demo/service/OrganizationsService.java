@@ -123,16 +123,6 @@ public class OrganizationsService {
 		
 	}
 	
-	// 특정 키워드로 부서원 검색 부서포함
-//	public List<OrganizationWithParentResult> getOrgFromKeyword(String searchType, String keyword) throws Exception{
-//		
-//		
-//		final List<MemberEntity> list = MemRepo.findByNameContains(keyword);
-//		
-//		return list.stream().map(OrganizationWithParentResult::new).collect(Collectors.toList());
-//	}
-	
-	
 	// 하나의 부서 가져오기
 	public OrganizationsEntity getDeptOne(Long id) throws Exception {
 		

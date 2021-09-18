@@ -83,9 +83,9 @@ public class SelectTest {
 	void selectOrganizaionsDeptCode() {
 		
 		// 테스트 데이터 
-		//OrganizationsEntity.builder().name("플랫폼개발부").code("D121").type("Department").parent(swDev).build();
+		//OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build();
 		
-		String deptCode = "D121";
+		String deptCode = "B121";
 		
 		OrganizationResult test = null;
 		try {
@@ -94,7 +94,7 @@ public class SelectTest {
 			e.printStackTrace();
 		}
 		
-		assertEquals(test.getCode(),"D121");
+		assertEquals(test.getCode(),"B121");
 		assertEquals(test.getName(),"플랫폼개발부");
 		assertEquals(test.getType(),"Department");
 	}
@@ -104,7 +104,7 @@ public class SelectTest {
 	void selectOrganizaionsDeptCodeFail() {
 		
 		// 테스트 데이터 
-		//OrganizationsEntity.builder().name("플랫폼개발부").code("D121").type("Department").parent(swDev).build();
+		//OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build();
 		
 		String deptCode = "0";
 		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
@@ -119,7 +119,7 @@ public class SelectTest {
 	void selectOrganizaionsDeptCodeFail2() {
 		
 		// 테스트 데이터 
-		//OrganizationsEntity.builder().name("플랫폼개발부").code("D121").type("Department").parent(swDev).build();
+		//OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build();
 		
 		String deptCode = "";
 		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
@@ -134,9 +134,9 @@ public class SelectTest {
 	void selectOrganizaionsOnlyDeptCode() {
 		
 		// 테스트 데이터 
-		//OrganizationsEntity.builder().name("플랫폼개발부").code("D121").type("Department").parent(swDev).build();
+		//OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build();
 		
-		String deptCode = "D121";
+		String deptCode = "B121";
 		
 		OnlyOrganizationResult test = null;
 		try {
@@ -145,7 +145,7 @@ public class SelectTest {
 			e.printStackTrace();
 		}
 		
-		assertEquals(test.getCode(),"D121");
+		assertEquals(test.getCode(),"B121");
 		assertEquals(test.getName(),"플랫폼개발부");
 		assertEquals(test.getType(),"Department");
 	}
@@ -155,7 +155,7 @@ public class SelectTest {
 	void selectOrganizaionsOnlyDeptCodeFail() {
 		
 		// 테스트 데이터 
-		//OrganizationsEntity.builder().name("플랫폼개발부").code("D121").type("Department").parent(swDev).build();
+		//OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build();
 		
 		String deptCode = "0";
 		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{
@@ -170,7 +170,7 @@ public class SelectTest {
 	void selectOrganizaionsOnlyDeptCodeFail2() {
 		
 		// 테스트 데이터 
-		//OrganizationsEntity.builder().name("플랫폼개발부").code("D121").type("Department").parent(swDev).build();
+		//OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build();
 		
 		String deptCode = "";
 		InvalidDataException exception = assertThrows(InvalidDataException.class, ()->{

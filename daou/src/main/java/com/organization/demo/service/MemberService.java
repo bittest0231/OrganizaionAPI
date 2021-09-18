@@ -80,7 +80,8 @@ public class MemberService {
 		
 		MemberEntity entity = null;
 		
-		if( model.getName() == null || "".equals(model.getName()) ) 
+		if( model.getName() == null || "".equals(model.getName()) 
+			|| model.getTeam() == null ) 
 		{
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
 		}
@@ -104,6 +105,7 @@ public class MemberService {
 			entity.setName(model.getName());
 		}
 		try {
+			
 			deptList = orgService.getDeptMany(model.getTeam());
 			
 		} catch (Exception e) {
