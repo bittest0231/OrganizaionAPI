@@ -34,3 +34,17 @@
 ### TestDataInsert.java 파일에서 테스트 데이터를 APP 구동시에 넣어주고 있다.
 ## API PORT
 ### port는 기본포트 8080을 사용하고 있다.
+
+## API TEST
+
+## 항목  | Method  | URL
+### 조직도 조회 | GET | http://{서버URL}/org/organizations
+### 부서 추가	| POST	| http://{서버URL}/org/dept   
+### 부서 수정	| PUT |	http://{서버URL}/org/dept/{deptId}
+### 부서 삭제	| DELETE	| http://{서버URL}/org/dept/{deptId}
+#### Body Example) {  "code" : "A140",	"name":"테스트팀", 	"type":"Division",	"parentId":1 }
+### 부서원 추가	| POST	| http://{서버URL}/org/member
+### 부서원 수정	| PUT	| http://{서버URL}/org/member/{memberId}
+### 부서원 삭제	| DELETE  |	http://{서버URL}/org/member/{memberId}
+#### Body Example) { "name":"테스트인원", "manager": true, "team":[1,2]	}
+
