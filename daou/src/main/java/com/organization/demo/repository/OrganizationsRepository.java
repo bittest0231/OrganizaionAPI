@@ -20,5 +20,6 @@ public interface OrganizationsRepository extends JpaRepository<OrganizationsEnti
 	
 	List<OrganizationsEntity> findByNameContains(String name);
 
+	boolean existsByCode(String code);
 	
 }

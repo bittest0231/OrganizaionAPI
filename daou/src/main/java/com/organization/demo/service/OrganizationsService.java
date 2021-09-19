@@ -178,7 +178,16 @@ public class OrganizationsService {
 			// searchType 코드값이 2가지의 경우에 포함되지 않는 경우
 			throw new InvalidDataException("searchType 값이 적절하지 않습니다.");
 		}
-		
+	}
+	
+	/**
+	 * 부서코드 중복검사
+	 * @author 박세진
+	 * @param code 중복검사 진행할 코드값
+	 * @return boolean 중복되는 경우 true, 중복되지 않는 경우 false 반환
+	 * */
+	public boolean checkCodeDuplicate(String code)throws Exception {
+		return OrgRepo.existsByCode(code);
 	}
 	
 	/**
@@ -198,6 +207,10 @@ public class OrganizationsService {
 		{
 			throw new InvalidDataException("요청값이 적절하지 않습니다.");
 		}
+		
+		// 코드값 중복 체크
+		if(checkCodeDuplicate(model.getCode()))
+			throw new InvalidDataException("중복되는 부서코드가 존재합니다.");
 		
 		OrganizationsEntity parentEntity = null;
 		try {
@@ -254,6 +267,10 @@ public class OrganizationsService {
 			entity.setName(model.getName());
 		}
 		if( !entity.getCode().equals(model.getCode()) ) {
+			// 코드값 중복 체크
+			if(checkCodeDuplicate(model.getCode()))
+				throw new InvalidDataException("중복되는 부서코드가 존재합니다.");
+			
 			entity.setCode(model.getCode());
 		}
 		if( !entity.getType().equals(model.getType()) ) {
