@@ -25,7 +25,13 @@ public class MemberService {
 	@Autowired
 	private final MemberRepository MemRepo;
 	
-	// 부서원 한명 ID로 조회
+	
+	/**
+	 * 부서원 단일 조회
+	 * @author 박세진
+	 * @param id 조회 대상이 될 부서원 객체의 id 값
+	 * @return MemberEntity id 값으로 조회한 부서원 entity 객체 반환
+	 * */
 	public MemberEntity getMemberOne(Long id) throws Exception {
 		
 		return MemRepo.findById(id)
@@ -34,7 +40,12 @@ public class MemberService {
 			);
 	}
 	
-	// 부서원 추가
+	/**
+	 * 부서원 추가
+	 * @author 박세진
+	 * @param model 추가할 부서원 정보가 담긴 model
+	 * @return MemberEntity 추가에 성공한 부서원 entity 객체 반환
+	 * */
 	public MemberEntity createMember(MemberModel model) throws Exception {
 
 		if( model.getName() == null || "".equals(model.getName()) 
@@ -78,7 +89,13 @@ public class MemberService {
 		return result;
 	}
 	
-	// 부서원 수정
+	/**
+	 * 부서원 수정
+	 * @author 박세진
+	 * @param id 수정 대상이 될 부서원 id 값
+	 * @param model 수정할 부서원 정보가 담긴 model
+	 * @return MemberEntity 수정에 성공한 부서원 entity 객체 반환
+	 * */
 	public MemberEntity updateMember(Long memberId, MemberModel model ) throws Exception{
 		
 		MemberEntity entity = null;
@@ -107,9 +124,7 @@ public class MemberService {
 			entity.setName(model.getName());
 		}
 		try {
-			
 			deptList = orgService.getDeptMany(model.getTeam());
-			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -117,14 +132,18 @@ public class MemberService {
 		if(deptList.size() != model.getTeam().size() ) {
 			throw new InvalidDataException("존재하지 않는 부서코드가 포함되어 있습니다.");
 		}
-		
 		entity.setTeam(deptList);
 		entity.setManager(model.isManager());
 		
 		return MemRepo.save(entity);
 	}
 	
-	// 부서원 삭제
+	/**
+	 * 부서원 삭제
+	 * @author 박세진
+	 * @param id 삭제 대상이 될 부서원 id 값
+	 * @return void
+	 * */
 	@Transactional
 	public void deleteMember(Long id) throws Exception {
 		
