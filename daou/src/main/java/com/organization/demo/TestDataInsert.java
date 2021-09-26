@@ -40,11 +40,11 @@ public class TestDataInsert implements ApplicationRunner{
 		
 		OrganizationsEntity flatformDev = OrganizationsEntity.builder().name("플랫폼개발부").code("B121").type("Department").parent(swDev).build(); 
 
-		OrganizationsEntity flatformDev1 = OrganizationsEntity.builder().name("비즈플랫폼팀").code("C1211").type("Department").parent(flatformDev).build(); 
-		OrganizationsEntity flatformDev2 = OrganizationsEntity.builder().name("비즈서비스팀").code("C1212").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev1 = OrganizationsEntity.builder().name("플랫폼팀").code("C1211").type("Department").parent(flatformDev).build(); 
+		OrganizationsEntity flatformDev2 = OrganizationsEntity.builder().name("서비스팀").code("C1212").type("Department").parent(flatformDev).build(); 
 		OrganizationsEntity flatformDev3 = OrganizationsEntity.builder().name("그룹웨어개발팀").code("C1213").type("Department").parent(flatformDev).build(); 
 		
-		OrganizationsEntity bizServiceDev = OrganizationsEntity.builder().name("비즈서비스개발부").code("B122").type("Department").parent(swDev).build(); 
+		OrganizationsEntity bizServiceDev = OrganizationsEntity.builder().name("서비스개발부").code("B122").type("Department").parent(swDev).build(); 
 
 		OrganizationsEntity bizServiceDev1 = OrganizationsEntity.builder().name("플랫폼서비스팀").code("C1221").type("Department").parent(bizServiceDev).build(); 
 		OrganizationsEntity bizServiceDev2 = OrganizationsEntity.builder().name("모바일개발팀").code("C1222").type("Department").parent(bizServiceDev).build(); 

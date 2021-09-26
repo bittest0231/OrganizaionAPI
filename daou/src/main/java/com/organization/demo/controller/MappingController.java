@@ -1,5 +1,6 @@
 package com.organization.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,10 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 public class MappingController {
 
+	@Autowired
 	private final OrganizationsService orgService;
 	
+	@Autowired
 	private final MemberService memService;
 	
 	/**
